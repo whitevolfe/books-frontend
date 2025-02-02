@@ -11,9 +11,17 @@ const BACKEND_URL = "https://bookstore-backend-rho.vercel.app/";
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const fetchBooks = async () => {
-    const response = await fetch(`${BACKEND_URL}/books`);
-    const data = await response.json();
-    return data;
+    try {
+        const response = await fetch(`${BACKEND_URL}/books`);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error("Error fetching books:", error);
+        throw error; // Rethrow the error if you want to handle it further up
+    }
 };
 
 function App() {
